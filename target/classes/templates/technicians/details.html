@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eRepairShop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+          integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+          integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+          crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/eb88cc226a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+  <div class="card w-50 mt-5 m-auto">
+    <div class="card-header">
+      <div class="row mx-2">
+        <div class="col">
+          <h2 th:text="${technician.name}+'\'s details'"></h2>
+        </div>
+        <div class="col text-end">
+          <a class="btn btn-primary" th:href="@{/technicians/edit/{id}(id=${technician.id})}" role="button">
+            Edit Technician</a>
+          <a class="btn btn-danger" th:href="@{/technicians/delete/{id}(id=${technician.id})}" role="button">
+            Delete Technician</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="px-5">
+            <h6>Name:</h6>
+            <h3 th:text="${technician.name}"></h3>
+            <br>
+            <h6>Specialization:</h6>
+            <h3 th:text="${technician.specialization}"></h3>
+            <br>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div th:replace="fragments/footer"></div>
+</body>
+</html>

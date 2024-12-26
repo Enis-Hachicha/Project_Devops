@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eRepairShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/eb88cc226a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+
+    <div class="card mt-5 m-auto">
+        <div class="card-header">
+            <h2 th:text="${customMessage} ? ${customMessage} : 'Bills'"></h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item ">
+                <div class="my-2">
+                    <form th:action="@{/bills}" class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
+                        <div class="col-auto">
+                            <label for="inlineFormInputGroupUsername">Filter By: </label>
+                        </div>
+
+                        <div class="col-auto">
+                            <input th:disabled="${cid} ? true : false" type="text" name="cname" class="form-control" id="inlineFormInputGroupUsername" placeholder="Customer Name">
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="inlineFormSelectPref">Or </label>
+                        </div>
+
+                        <div class="col-auto">
+                            <select th:disabled="${cid} ? true : false" name="status" class="form-select" id="inlineFormSelectPref">
+                                <option value="">Payment Status</option>
+                                <option value="">All</option>
+                                <option
+                                        th:each="ps : ${T(org.example.erepairshop.entities.PaymentStatus).values()}"
+                                        th:text="${ps.displayText}"
+                                        th:value="${ps.name()}"
+                                        th:selected="${param.status != null && param.status[0] == ps.name()}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <div class="card-body">
+
+            <table class="table">
+                <thead class="thead-light">
+                <tr class="text-center">
+                    <th scope="col">#id</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Payment Date</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Repair Order</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b:${data}" class="text-center">
+                    <td th:text="${b.id}"></td>
+                    <td th:text="${b.totalAmount}"></td>
+                    <td th:text="${b.paymentStatus}"></td>
+                    <td th:text="${b.paymentDate} ?: 'T.B.D'"></td>
+                    <td>
+                        <a th:href="@{/customers/{id}(id=${b.repairOrder.customer.id})}" class="btn btn-dark"
+                           title="customer associated to the bill">
+                            <span class="fa-solid fa-user"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/repairOrder/{id}(id=${b.repairOrder.id})}" class="btn btn-dark"
+                            title="all repair order associated to the bill">
+                            <span class="fa-solid fa-receipt"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{/bills/{id}(id=${b.id})}" role="button">
+                            Details</a>
+
+<!--                        <a th:href="@{/customers/delete/{id}(id=${c.id})}" class="btn btn-danger"-->
+<!--                            title="delete the customers"> <span-->
+<!--                                class="fa fa-trash"></span>-->
+<!--                        </a>-->
+                        <a th:href="@{/bills/edit/{id}(id=${b.id})}" class="btn btn-warning"
+                            title="edit the bill"> <span
+                                class="fa-solid fa-pen-to-square"></span> </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="w-100 d-flex justify-content-center">
+                <nav aria-label="Page navigation m-auto">
+                    <ul class="pagination">
+                        <li th:each="i,s:${pages}"
+                            th:class="${current == s.index ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${s.index+1}"
+                               th:href="@{/bills(page=${s.index+1})}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer"></div>
+</body>
+
+</html>

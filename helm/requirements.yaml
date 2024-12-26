@@ -1,0 +1,13 @@
+dependencies:
+  - name: mysql
+    version: 8.5.12
+    repository: https://charts.bitnami.com/bitnami
+  - name: phpmyadmin
+    version: 6.10.0
+    repository: https://charts.bitnami.com/bitnami
+  - name: prometheus
+    version: 13.10.2
+    repository: https://prometheus-community.github.io/helm-charts
+  - name: grafana
+    version: 5.11.1
+    repository: https://grafana.github.io/helm-charts

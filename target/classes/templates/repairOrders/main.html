@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eRepairShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/eb88cc226a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+
+    <div class="card mt-5 m-auto">
+        <div class="card-header">
+            <h2 th:text="${customMessage} ? ${customMessage} : 'Repair Orders'"></h2>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item ">
+                <div class="my-2 align-content-center">
+                    <form th:action="@{/repairOrders}" class="row g-3 align-items-center justify-content-center">
+                        <div class="col-auto">
+                            <label  for="inlineFormInputGroup">Filter By: </label>
+                        </div>
+
+                        <div class="col-auto">
+                            <input th:disabled="${cid} ? true : false" type="text" name="cname" class="form-control" id="inlineFormInputGroup" placeholder="Customer Name">
+                        </div>
+
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <div class="card-body">
+
+            <table class="table">
+                <thead class="thead-light">
+                <tr class="text-center">
+                    <th scope="col">#id</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Device</th>
+                    <th scope="col">Technician</th>
+                    <th scope="col">Bill</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ro:${data}" class="text-center">
+                    <td th:text="${ro.id}"></td>
+                    <td th:text="${ro.description}"></td>
+                    <td>
+                        <span class="badge" th:classappend="${ro.status.getDisplayText()}"
+                        th:text="${ro.status}">
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{/customers/{id}(id=${ro.customer.id})}" class="btn btn-dark"
+                           title="customer" th:text="${ro.customer.name}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/devices/{id}(id=${ro.device.id})}" class="btn btn-dark"
+                           title="device">
+                            <span class="fa-solid fa-desktop"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/technicians/{id}(id=${ro.technician.id})}" class="btn btn-dark"
+                           title="technician" th:text="${ro.technician.name}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="${ro.billing} ? @{/bills/{id}(id=${ro.billing.id})} : @{/bills/add/{id}(id=${ro.id})}" class="btn btn-dark"
+                           title="bill">
+                            <span class="fa-solid fa-receipt"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{/repairOrders/{id}(id=${ro.id})}" role="button">
+                            Details</a>
+
+                        <a th:href="@{/repairOrders/delete/{id}(id=${ro.id})}" class="btn btn-danger"
+                            title="delete the customer"> <span
+                                class="fa fa-trash"></span>
+                        </a>
+                        <a th:href="@{/repairOrders/edit/{id}(id=${ro.id})}" class="btn btn-warning"
+                            title="edit the customer"> <span
+                                class="fa-solid fa-pen-to-square"></span> </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="w-100 d-flex justify-content-center">
+                <nav aria-label="Page navigation m-auto">
+                    <ul class="pagination">
+                        <li th:each="i,s:${pages}"
+                            th:class="${current == s.index ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${s.index+1}"
+                               th:href="@{/repairOrders(cname=${cname},  devicesn=${devicesn},page=${s.index+1})}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer"></div>
+</body>
+
+</html>

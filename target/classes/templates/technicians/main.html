@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eRepairShop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/eb88cc226a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+
+    <div class="card mt-5 m-auto">
+        <div class="card-header">
+            <h2>Technicians</h2>
+        </div>
+
+        <ul class="list-group list-group-flush ">
+            <li class="list-group-item d-flex justify-content-around">
+
+                <div class="p-2 flex-shrink-1">
+                    <a th:href="@{/technicians/add}" class="btn btn-success">Add Technician</a>
+                </div>
+
+                <form th:action="@{/Technicians}" class="p-2 flex w-50">
+                    <div class="row">
+                        <input type="text" name="name" class="form-control col" placeholder="Search By Name" />
+                        <button type="submit" class="btn btn-primary ms-2 col-1">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+
+            </li>
+        </ul>
+
+        <div class="card-body">
+
+            <table class="table">
+                <thead class="thead-light">
+                <tr class="text-center">
+                    <th scope="col">#id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Specialization</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t:${data}" class="text-center">
+                    <td th:text="${t.id}"></td>
+                    <td th:text="${t.name}"></td>
+                    <td th:text="${t.specialization}"></td>
+                    <td>
+                        <a th:href="@{/technicians/delete/{id}(id=${t.id})}" class="btn btn-danger"
+                           title="delete technician"> <span
+                                class="fa fa-trash"></span>
+                        </a>
+                        <a th:href="@{/technicians/edit/{id}(id=${t.id})}" class="btn btn-warning"
+                           title="edit technician"> <span
+                                class="fa-solid fa-pen-to-square"></span> </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="w-100 d-flex justify-content-center">
+                <nav aria-label="Page navigation m-auto">
+                    <ul class="pagination">
+                        <li th:each="i,s:${pages}"
+                            th:class="${current == s.index ? 'page-item active' : 'page-item'}">
+                            <a class="page-link" th:text="${s.index+1}"
+                               th:href="@{/technicians(page=${s.index+1})}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer"></div>
+</body>
+</html>
